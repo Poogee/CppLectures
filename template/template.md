@@ -150,6 +150,56 @@ int main()
 
 <iframe width="1000px" height="400px" src="https://godbolt.org/e#g:!((g:!((g:!((h:codeEditor,i:(filename:'1',fontScale:14,fontUsePx:'0',j:1,lang:c%2B%2B,selection:(endColumn:12,endLineNumber:9,positionColumn:12,positionLineNumber:9,selectionStartColumn:12,selectionStartLineNumber:9,startColumn:12,startLineNumber:9),source:'template%3Ctypename+Type%3E%0AType+max(Type+a,+Type+b)%0A%7B%0A++++return+(a+%3E%3D+b+%3F+a+:+b)%3B%0A%7D%0A%0Aint+main()%0A%7B%0A++++const+int+a+%3D+3,+b+%3D+2,+c+%3D+1%3B%0A++++const+int+abMax+%3D+max(a,+b)%3B+/*+max%3Cint%3E+*/%0A++++const+int+maxInt+%3D+max(abMax,+c)%3B+/*+max%3Cint%3E+*/%0A%0A++++const+char+aChar+%3D+3,+bChar+%3D+2,+cChar+%3D+1%3B+%0A++++const+char+abMaxChar+%3D+max(aChar,+bChar)%3B+/*+max%3Cchar%3E+*/%0A++++const+char+maxChar+%3D+max(abMaxChar,+cChar)%3B+/*+max%3Cchar%3E+*/%0A%0A++++const+int+abCharMax+%3D+max(a,+bChar)%0A++%0A++++return+0%3B%0A%7D'),l:'5',n:'1',o:'C%2B%2B+source+%231',t:'0')),k:50,l:'4',n:'0',o:'',s:0,t:'0'),(g:!((g:!((h:output,i:(compilerName:'x86-64+gcc+14.1',editorid:1,fontScale:14,fontUsePx:'0',j:1,wrap:'1'),l:'5',n:'0',o:'Output+of+x86-64+gcc+14.1+(Compiler+%231)',t:'0')),header:(),l:'4',m:50,n:'0',o:'',s:0,t:'0'),(g:!((h:compiler,i:(compiler:g141,filters:(b:'0',binary:'1',binaryObject:'1',commentOnly:'0',debugCalls:'1',demangle:'0',directives:'0',execute:'1',intel:'0',libraryCode:'0',trim:'1',verboseDemangling:'0'),flagsViewOpen:'1',fontScale:14,fontUsePx:'0',j:1,lang:c%2B%2B,libs:!(),options:'',overrides:!(),selection:(endColumn:90,endLineNumber:4,positionColumn:90,positionLineNumber:4,selectionStartColumn:90,selectionStartLineNumber:4,startColumn:90,startLineNumber:4),source:1),l:'5',n:'0',o:'+x86-64+gcc+14.1+(Editor+%231)',t:'0')),header:(),k:50,l:'4',m:50,n:'0',o:'',s:0,t:'0')),k:50,l:'3',n:'0',o:'',t:'0')),l:'2',n:'0',o:'',t:'0')),version:4"></iframe>
 
+С урока:
+```cpp
+template<typename T3, typename T1, typename T2>
+T3 max(T1 a, T2 b)
+{
+    return (a >= b ? a : b);
+}
+
+int main()
+{
+    const int a = 3, b = 2, c = 1;
+    const int abMax = max<int>(a, b); /* max<int> */
+    return 0;
+}
+```
+
+```cpp
+template <class T> 
+void swap(T& left, T& right)
+{
+    T tmp(left); 
+    left = right;
+    right = tmp;
+}
+```
+
+```cpp
+#include<string>
+/*
+auto max(int a, int b) -> int
+{
+    return (a >= b ? a : b);
+}*/
+
+template<class T1, class T2>
+auto max(T1 a, T2 b) -> decltype(a + b)
+{
+    return (a >= b ? a : b);
+}
+
+int max(int a, std::string x){
+    return 0;
+}
+
+int main()
+{
+    max(3, std::string{"hi"});
+}
+```
+
 <br><br><br><br><br><br><br><br><br><br><br><br>
 
 ## Шаблоны класса
