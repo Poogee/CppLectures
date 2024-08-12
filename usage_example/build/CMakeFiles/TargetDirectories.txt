@@ -1,0 +1,3 @@
+/Users/poogee/Downloads/Lecture - Copy 2/template/usage_example/build/CMakeFiles/EnumArrayProject.dir
+/Users/poogee/Downloads/Lecture - Copy 2/template/usage_example/build/CMakeFiles/edit_cache.dir
+/Users/poogee/Downloads/Lecture - Copy 2/template/usage_example/build/CMakeFiles/rebuild_cache.dir

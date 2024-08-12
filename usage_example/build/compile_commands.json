@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/Users/poogee/Downloads/Lecture - Copy 2/template/usage_example/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++   -g -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -o CMakeFiles/EnumArrayProject.dir/template_usage_example.cpp.o -c \"/Users/poogee/Downloads/Lecture - Copy 2/template/usage_example/template_usage_example.cpp\"",
+  "file": "/Users/poogee/Downloads/Lecture - Copy 2/template/usage_example/template_usage_example.cpp",
+  "output": "CMakeFiles/EnumArrayProject.dir/template_usage_example.cpp.o"
+}
+]
