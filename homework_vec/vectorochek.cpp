@@ -9,11 +9,9 @@ class Vectorochek
 {
 public:
     // Constructor
-    Vectorochek(size_t size = 0)
+    Vectorochek(size_t size = 0) : vec_size(size), vec_capacity(size)
     {
-        vec_size = size;
-        vec_capacity = size;
-        data = new T[size + 1];
+        data = new T[size];
         std::fill(data, data + size, T());
     }
 
@@ -45,7 +43,7 @@ public:
         }
 
         data[vec_size] = element;
-        vec_size++;
+        ++vec_size;
     }
 
     // Access elements by index
@@ -94,9 +92,8 @@ public:
     static constexpr size_t bits_per_byte = 8;
 
     // Constructor
-    Vectorochek(size_t size = 0)
+    Vectorochek(size_t size = 0) : vec_size(size)
     {
-        vec_size = size;
         vec_capacity = (size - 1 + bits_per_byte) / bits_per_byte;
         data = new std::byte[vec_capacity];
         std::fill(data, data + vec_capacity, std::byte(0));
@@ -130,7 +127,7 @@ public:
         }
 
         element ? set_bit(data, vec_size) : clear_bit(data, vec_size);
-        vec_size++;
+        ++vec_size;
     }
 
     // Access elements by index
