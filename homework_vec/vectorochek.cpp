@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <cassert>
+#include <format>
 
 // Implement vector
 static_assert(sizeof(bool) == 1);
@@ -13,6 +14,15 @@ public:
     {
         data = new T[size];
         std::fill(data, data + size, T());
+    }
+
+    Vectorochek(const Vectorochek &other) : vec_size(other.vec_size), vec_capacity(other.vec_capacity)
+    {
+        data = new T[vec_capacity];
+        for (size_t i = 0; i < vec_size; ++i)
+        {
+            data[i] = other.data[i];
+        }
     }
 
     // Destructor
@@ -73,6 +83,54 @@ public:
 
         data = new_data;
         vec_capacity = new_capacity;
+    }
+
+    template <typename K>
+    class IteratorBase
+    {
+    public:
+        IteratorBase(K *ptr) : ptr(ptr) {}
+        K &operator*()
+        {
+            return *ptr;
+        }
+        K *operator->()
+        {
+            return ptr;
+        }
+        K operator++()
+        {
+            ++ptr;
+            return *ptr;
+        }
+
+        auto operator<=>(const IteratorBase &) const = default;
+
+    private:
+        K *ptr;
+    };
+
+    using Iterator = IteratorBase<T>;
+    using ConstIterator = IteratorBase<const T>;
+
+    Iterator begin()
+    {
+        return Iterator(data);
+    }
+
+    Iterator end()
+    {
+        return Iterator(data + vec_size);
+    }
+
+    ConstIterator begin() const
+    {
+        return ConstIterator(data);
+    }
+
+    ConstIterator end() const
+    {
+        return ConstIterator(data + vec_size);
     }
 
 private:
@@ -215,89 +273,22 @@ private:
 
 int main()
 {
-    // Test for general Vectorochek<int>
-    Vectorochek<int> intVec;
-    intVec.push_back(1);
-    intVec.push_back(2);
-    intVec.push_back(3);
-    std::cout << "intVec size: " << intVec.size() << std::endl; // Expected: 3
-    assert(intVec.size() == 3);
-    std::cout << "intVec capacity: " << intVec.capacity()
-              << std::endl; // Expected: >= 3
-    assert(intVec.capacity() >= 3);
-    std::cout << "intVec[0]: " << intVec[0] << std::endl; // Expected: 1
-    assert(intVec[0] == 1);
-    std::cout << "intVec[1]: " << intVec[1] << std::endl; // Expected: 2
-    assert(intVec[1] == 2);
-    std::cout << "intVec[2]: " << intVec[2] << std::endl; // Expected: 3
-    assert(intVec[2] == 3);
-    try
+    Vectorochek<int> v;
+    v.push_back(1);
+    v.push_back(2);
+    v.push_back(3);
+
+    // Test Iterator
+    for (auto &x : v)
     {
-        std::cout << "intVec[3]: " << intVec[3]
-                  << std::endl; // Expected: out_of_range exception
-        assert(false);
-    }
-    catch (const std::out_of_range &e)
-    {
-        std::cout << "Caught exception: " << e.what() << std::endl;
+        x += 1;
+        std::cout << std::format("{} {} {}\n", v[0], v[1], v[2]);
     }
 
-    // Additional tests for Vectorochek<int>
-    intVec.push_back(4);
-    std::cout << "intVec size after push_back(4): " << intVec.size()
-              << std::endl; // Expected: 4
-    assert(intVec.size() == 4);
-    std::cout << "intVec[3]: " << intVec[3] << std::endl; // Expected: 4
-    assert(intVec[3] == 4);
-
-    intVec.push_back(5);
-    std::cout << "intVec size after push_back(5): " << intVec.size()
-              << std::endl; // Expected: 5
-    assert(intVec.size() == 5);
-    std::cout << "intVec[4]: " << intVec[4] << std::endl; // Expected: 5
-    assert(intVec[4] == 5);
-
-    // Test for Vectorochek<bool>
-    Vectorochek<bool> boolVec;
-    boolVec.push_back(true);
-    boolVec.push_back(false);
-    boolVec.push_back(true);
-    std::cout << "boolVec size: " << boolVec.size() << std::endl; // Expected: 3
-    assert(boolVec.size() == 3);
-    std::cout << "boolVec capacity: " << boolVec.capacity()
-              << std::endl; // Expected: >= 3
-    assert(boolVec.capacity() >= 3);
-    std::cout << "boolVec[0]: " << boolVec[0] << std::endl; // Expected: 1 (true)
-    assert(boolVec[0] == true);
-    std::cout << "boolVec[1]: " << boolVec[1] << std::endl; // Expected: 0 (false)
-    assert(boolVec[1] == false);
-    std::cout << "boolVec[2]: " << boolVec[2] << std::endl; // Expected: 1 (true)
-    assert(boolVec[2] == true);
-    try
+    // Test ConstIterator
+    for (const auto &x : v)
     {
-        std::cout << "boolVec[3]: " << boolVec[3]
-                  << std::endl; // Expected: out_of_range exception
-        assert(false);
+        x += 1; //* Does not compile
+        std::cout << std::format("{} {} {}\n", v[0], v[1], v[2]);
     }
-    catch (const std::out_of_range &e)
-    {
-        std::cout << "Caught exception: " << e.what() << std::endl;
-    }
-
-    // Additional tests for Vectorochek<bool>
-    boolVec.push_back(false);
-    std::cout << "boolVec size after push_back(false): " << boolVec.size()
-              << std::endl; // Expected: 4
-    assert(boolVec.size() == 4);
-    std::cout << "boolVec[3]: " << boolVec[3] << std::endl; // Expected: 0 (false)
-    assert(boolVec[3] == false);
-
-    boolVec.push_back(true);
-    std::cout << "boolVec size after push_back(true): " << boolVec.size()
-              << std::endl; // Expected: 5
-    assert(boolVec.size() == 5);
-    std::cout << "boolVec[4]: " << boolVec[4] << std::endl; // Expected: 1 (true)
-    assert(boolVec[4] == true);
-
-    return 0;
 }

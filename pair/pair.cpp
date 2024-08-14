@@ -2,17 +2,19 @@
 #include <string>
 #include <format>
 #include <cassert>
+#include <functional>
 
 template <class T1, class T2>
 class Pair
 {
 public:
-    Pair(T1 first, T2 second) : first(first), second(second) {};
+    Pair(T1 first, T2 second) : first(std::move(first)), second(std::move(second)) {};
+    Pair(const Pair &other) : first(other.first), second(other.second) {};
     void display() const
     {
         try
         {
-            std::cout << std::format("First: {}, Second: {}\n", first, second);
+            std::cout << std::format("First: {}, Second: {}\n", std::cref(first).get(), std::cref(second).get());
         }
         catch (const std::exception &error)
         {
