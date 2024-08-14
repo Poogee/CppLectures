@@ -1,14 +1,14 @@
 #include <array>
 #include <iostream>
 
-template <typename T, size_t S>
+template <typename T, std::size_t S>
 void PrintArray(const std::array<T, S> &array)
 {
   for (const auto &element : array)
   {
     std::cout << element << ' ';
   }
-  std::cout << std::endl;
+  std::cout << '\n';
 }
 
 int main()

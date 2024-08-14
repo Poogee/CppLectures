@@ -18,8 +18,6 @@ public:
     // Destructor
     ~Vectorochek()
     {
-        vec_size = 0;
-        vec_capacity = 0;
         delete[] data;
     }
 
@@ -55,7 +53,7 @@ public:
         }
         return data[index];
     }
-    T &operator[](size_t index) const
+    const T &operator[](size_t index) const
     {
         if (index >= vec_size)
         {
@@ -102,8 +100,6 @@ public:
     // Destructor
     ~Vectorochek()
     {
-        vec_size = 0;
-        vec_capacity = 0;
         delete[] data;
     }
 
@@ -130,22 +126,42 @@ public:
         ++vec_size;
     }
 
+    struct BoolRef
+    {
+        BoolRef(std::byte *data, uint16_t index) : data(data), index(index) {}
+        operator bool() const
+        {
+            return static_cast<bool>(data[index / bits_per_byte] &
+                                     (std::byte(1) << (index % bits_per_byte)));
+        }
+        BoolRef &operator=(bool value)
+        {
+            value ? data[index / bits_per_byte] |= (std::byte(1) << (index % bits_per_byte)) : data[index / bits_per_byte] &= ~(std::byte(1) << (index % bits_per_byte));
+            return *this;
+        }
+
+    private:
+        std::byte *data;
+        uint16_t index;
+    };
+
     // Access elements by index
-    bool operator[](size_t index)
+    BoolRef operator[](size_t index)
     {
         if (index >= vec_size)
         {
             throw std::out_of_range("yikes");
         }
-        return get_bit(data, index);
+        return BoolRef(data, index);
     }
-    bool operator[](size_t index) const
+
+    const BoolRef operator[](size_t index) const
     {
         if (index >= vec_size)
         {
             throw std::out_of_range("yikes");
         }
-        return get_bit(data, index);
+        return BoolRef(data, index);
     }
 
     void resize(size_t new_capacity)
